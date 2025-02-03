@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "F:/Pratyush/AppDev/apihandelling/windows/flutter"
+    "cmake.sourceDirectory": "F:/Pratyush/AppDev/apihandelling/windows/flutter",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

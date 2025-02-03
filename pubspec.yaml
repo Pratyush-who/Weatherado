@@ -13,6 +13,7 @@ dependencies:
   weather: ^3.1.1
   cupertino_icons: ^1.0.8
   intl: ^0.20.2
+  provider: ^6.0.3
 
 
 dev_dependencies:
