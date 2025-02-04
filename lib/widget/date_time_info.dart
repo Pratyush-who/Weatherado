@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 
@@ -12,18 +13,13 @@ class DateTimeInfo extends StatelessWidget {
     return Column(
       children: [
         Text(
-          DateFormat("h:m a").format(
+          DateFormat("h:mm a").format(
             now,
           ),
-          style: TextStyle(fontSize: 34),
+          style: GoogleFonts.lato(fontSize: 24,color: Colors.white),
         ),
         SizedBox(
           height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [Text(DateFormat("EEEE").format(now),),],
         ),
       ],
     );

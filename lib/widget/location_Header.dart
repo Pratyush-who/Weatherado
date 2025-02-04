@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:weather/weather.dart';
 
 class LocationHeader extends StatelessWidget {
@@ -9,9 +10,9 @@ class LocationHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      currentWeather?.country ?? "Wrong..!!",
-      style: TextStyle(
-          fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+      currentWeather?.areaName ?? "Wrong..!!",
+      style: GoogleFonts.beVietnamPro(
+          fontSize: 34, fontWeight: FontWeight.w400, color: Colors.white),
     );
   }
 }
