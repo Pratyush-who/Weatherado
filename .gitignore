@@ -44,3 +44,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# CMake related files
+CMakeLists.txt
+*.cmake
+
+# C++ build files
+*.o
+*.a
+*.so
