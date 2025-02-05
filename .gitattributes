@@ -6,10 +6,3 @@
 # Disable detection for CMake files
 *.cmake linguist-detectable=false
 CMakeLists.txt linguist-detectable=false
-
-# Disable detection for Makefiles
-Makefile linguist-detectable=false
-makefile linguist-detectable=false
-
-# Ensure Dart is detected correctly (explicitly add this)
-*.dart linguist-detectable=true
