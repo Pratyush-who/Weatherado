@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:apihandelling/api/const.dart';
 import 'package:apihandelling/widget/description.dart';
 import 'package:apihandelling/widget/highTemp.dart';
+import 'package:apihandelling/widget/hourly_forcast.dart';
 import 'package:apihandelling/widget/location_Header.dart';
 import 'package:apihandelling/widget/lowTemp.dart';
 import 'package:apihandelling/widget/temp_data.dart';
@@ -20,15 +21,25 @@ class _HomeScreenState extends State<HomeScreen> {
       WeatherFactory(WEATHER_API_KEY, language: Language.ENGLISH);
 
   Weather? currentWeather;
+  List<Weather> hourlyForecast = [];
 
   @override
   void initState() {
     super.initState();
-    wf.currentWeatherByCityName("lucknow").then((w) {
-      print(w.temperature?.celsius);
-      setState(() {
-        currentWeather = w;
-      });
+    fetchWeather();
+  }
+
+  Future<void> fetchWeather() async {
+    Weather weather = await wf.currentWeatherByCityName("Lucknow");
+    List<Weather> forecast = await wf.fiveDayForecastByCityName("Lucknow");
+    DateTime now = DateTime.now();
+  List<Weather> nextHours = forecast.where((w) {
+    return w.date != null && w.date!.isAfter(now) && w.date!.hour != now.hour;
+  }).take(10).toList();
+
+    setState(() {
+      currentWeather = weather;
+      hourlyForecast = nextHours;
     });
   }
 
@@ -36,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        // <-- Wrap everything in a Stack
         children: [
           Container(
             decoration: BoxDecoration(
@@ -102,12 +112,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Text('Hourly Forcast',style: TextStyle(color: Colors.white70,fontWeight: FontWeight.w500),),
-                            SizedBox(width: 140,),
-                            Text('Hourly Forcast',style: TextStyle(color: Colors.white70,fontWeight: FontWeight.w500), ),                           
+                            Text(
+                              'Hourly Forcast',
+                              style: TextStyle(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              width: 140,
+                            ),
+                            Text(
+                              'Weekly Forcast',
+                              style: TextStyle(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ],
                         ),
-                        Divider(color: Colors.white.withOpacity(0.5), thickness: 1),
+                        Divider(
+                            color: Colors.white.withOpacity(0.5), thickness: 1),
+                        hourlyForecast.isEmpty
+                            ? Center(child: CircularProgressIndicator())
+                            : HourlyForecast(forecast: hourlyForecast),
                         ListTile(
                           leading: Icon(Icons.thermostat),
                           title: Text(
