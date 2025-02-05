@@ -1,8 +1,0 @@
-# Disable detection for C++ files
-*.h linguist-detectable=false
-*.cc linguist-detectable=false
-*.cpp linguist-detectable=false
-
-# Disable detection for CMake files
-*.cmake linguist-detectable=false
-CMakeLists.txt linguist-detectable=false
