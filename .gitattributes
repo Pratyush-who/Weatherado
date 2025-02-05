@@ -1,7 +1,14 @@
+# Disable detection for C++ files
 *.h linguist-detectable=false
 *.cc linguist-detectable=false
 *.cpp linguist-detectable=false
+
+# Disable detection for CMake files
 *.cmake linguist-detectable=false
-*.gradle linguist-detectable=false
-Podfile linguist-detectable=false
 CMakeLists.txt linguist-detectable=false
+
+# Disable detection for Makefiles
+Makefile linguist-detectable=false
+makefile linguist-detectable=false
+
+# Keep other files with default detection
