@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:apihandelling/api/const.dart';
 import 'package:apihandelling/widget/bottomNav.dart';
 import 'package:apihandelling/widget/description.dart';
+import 'package:apihandelling/widget/dialogue_box.dart';
 import 'package:apihandelling/widget/highTemp.dart';
 import 'package:apihandelling/widget/hourly_forcast.dart';
 import 'package:apihandelling/widget/location_Header.dart';
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchWeather();
+    fetchWeather("Lucknow");
   }
 
   int _selectedIndex = 0;
@@ -38,19 +39,20 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Future<void> fetchWeather() async {
-    var weather = await wf.currentWeatherByCityName("Lucknow");
-    var forecast = await wf.fiveDayForecastByCityName("Lucknow");
-    var now = DateTime.now();
+  Future<void> fetchWeather(String cityName) async {
+  var weather = await wf.currentWeatherByCityName(cityName);
+  var forecast = await wf.fiveDayForecastByCityName(cityName);
+  var now = DateTime.now();
 
-    setState(() {
-      currentWeather = weather;
-      hourlyForecast = forecast
-          .where((w) => w.date?.isAfter(now) ?? false)
-          .take(10)
-          .toList();
-    });
-  }
+  setState(() {
+    currentWeather = weather;
+    hourlyForecast = forecast
+        .where((w) => w.date?.isAfter(now) ?? false)
+        .take(10)
+        .toList();
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,16 +91,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.42,
-            minChildSize: 0.42,
+            initialChildSize: 0.40,
+            minChildSize: 0.40,
             maxChildSize: 0.71,
             builder: (context, controller) {
               return ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(60)),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                  filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
                   child: Container(
-                    color: Colors.white.withOpacity(0.1),
+                    color: const Color.fromARGB(255, 76, 44, 132).withOpacity(0.1),
                     padding: EdgeInsets.symmetric(vertical: 1, horizontal: 30),
                     child: ListView(
                       controller: controller,
@@ -129,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Divider(
                             color: Colors.white.withOpacity(0.5), thickness: 1),
+                            SizedBox(height: 10,),
                         hourlyForecast.isEmpty
                             ? Center(child: CircularProgressIndicator())
                             : HourlyForecast(forecast: hourlyForecast),
@@ -188,27 +191,64 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: ClipRRect(
+  child: BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), 
+    child: Container(
+      color: Color.fromARGB(255, 74, 44, 132).withOpacity(.8), 
+      child: BottomAppBar(
+        color: Colors.transparent,
         height: 60,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.pin_drop_outlined),
+              icon: Icon(Icons.pin_drop_outlined, color: Colors.white,size: 30,),
               onPressed: () => _onItemTapped(0),
             ),
             IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () => _onItemTapped(1),
-            ),
-            IconButton(
-              icon: Icon(Icons.list),
+              icon: Icon(Icons.list, color: Colors.white,size: 30,),
               onPressed: () => _onItemTapped(2),
             ),
           ],
         ),
       ),
+    ),
+  ),
+),
+floatingActionButton: Stack(
+  alignment: Alignment.bottomCenter,
+  children: [
+    Positioned(
+      bottom: 3, // Adjust this value to move FAB down
+      child: FloatingActionButton(
+        onPressed: () async {
+          final selectedCity = await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              return DialogueBox();
+            },
+          );
+          
+          if (selectedCity != null && selectedCity.isNotEmpty) {
+            setState(() {
+              fetchWeather(selectedCity);  // Fetch the weather data for the selected city
+            });
+          }
+        },
+        backgroundColor: Colors.purple[200],
+        shape: CircleBorder(),
+        elevation: 10, // Adds a nice shadow effect
+        child: Icon(Icons.add, size: 30, color: Colors.white),
+      ),
+    ),
+  ],
+),
+
+
+floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, 
+
     );
   }
 }

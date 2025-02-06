@@ -28,61 +28,76 @@ class HourlyForecast extends StatelessWidget {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6.0),
-            child: Container(
-              width: 62,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.deepPurple.shade400,
-                    Colors.deepPurple.shade600,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+            child: CustomPaint(
+              size: Size(62, 120),
+              painter: BorderGradientPainter(),
+              child: Container(
+                width: 62,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 82, 61, 158).withOpacity(.6), // Background color
+                  borderRadius: BorderRadius.circular(40),
                 ),
-                borderRadius: BorderRadius.circular(40),
-                border: Border.all(
-                    color: Colors.white.withOpacity(0.5), width: 1.5),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    formatHour(weather.date),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      formatHour(weather.date),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Image.network(
-                    iconUrl,
-                    width: 40,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return CircularProgressIndicator();
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(Icons.cloud, color: Colors.white, size: 40);
-                    },
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    '${weather.temperature?.celsius?.toStringAsFixed(0)}°',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    SizedBox(height: 4),
+                    Image.network(
+                      iconUrl,
+                      width: 40,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return CircularProgressIndicator();
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(Icons.cloud, color: Colors.white, size: 40);
+                      },
                     ),
-                  ),
-                ],
+                    SizedBox(height: 4),
+                    Text(
+                      '${weather.temperature?.celsius?.toStringAsFixed(0)}°',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
         },
       ),
     );
-
   }
+}
+
+class BorderGradientPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final Paint paint = Paint()
+      ..shader = LinearGradient(
+        colors: [const Color.fromARGB(255, 200, 166, 206), Colors.transparent], // White to transparent
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+      ).createShader(rect)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    final RRect rRect = RRect.fromRectAndRadius(rect, Radius.circular(40));
+    canvas.drawRRect(rRect, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
