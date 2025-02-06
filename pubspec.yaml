@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   intl: ^0.20.2
   provider: ^6.0.3
+  cached_network_image: ^3.2.0
 
 
 dev_dependencies:

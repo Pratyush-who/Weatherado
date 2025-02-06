@@ -6,7 +6,6 @@ class HourlyForecast extends StatelessWidget {
 
   const HourlyForecast({required this.forecast});
 
-  // Convert 24-hour format to 12-hour AM/PM format
   String formatHour(DateTime? date) {
     if (date == null) return "";
     int hour = date.hour;
@@ -23,58 +22,59 @@ class HourlyForecast extends StatelessWidget {
         itemCount: forecast.length,
         itemBuilder: (context, index) {
           Weather weather = forecast[index];
-
-          // Debug: Print icon code
-          print("Weather Icon Code: ${weather.weatherIcon}");
-
-          // OpenWeatherMap icon URL (changed @4x to @2x)
           String iconUrl = weather.weatherIcon != null
               ? "https://openweathermap.org/img/wn/${weather.weatherIcon}@2x.png"
-              : "";
+              : "https://openweathermap.org/img/wn/10d@2x.png";
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
             child: Container(
-              width: 72,
+              width: 62,
               decoration: BoxDecoration(
-                color: Colors.deepPurple.shade400,
-                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.deepPurple.shade400,
+                    Colors.deepPurple.shade600,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(
+                    color: Colors.white.withOpacity(0.5), width: 1.5),
               ),
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     formatHour(weather.date),
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(height: 5),
-
-                  // Weather Icon (handles null & errors)
-                  iconUrl.isNotEmpty
-                      ? Image.network(
-                          iconUrl,
-                          width: 40,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return CircularProgressIndicator();
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return Icon(Icons.cloud,
-                                color: Colors.white, size: 40);
-                          },
-                        )
-                      : Icon(Icons.cloud,
-                          color: Colors.white, size: 40), // Fallback icon
-
-                  SizedBox(height: 5),
+                  SizedBox(height: 4),
+                  Image.network(
+                    iconUrl,
+                    width: 40,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return CircularProgressIndicator();
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.cloud, color: Colors.white, size: 40);
+                    },
+                  ),
+                  SizedBox(height: 4),
                   Text(
-                    '${weather.temperature?.celsius?.toStringAsFixed(0)}°C',
+                    '${weather.temperature?.celsius?.toStringAsFixed(0)}°',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -83,5 +83,6 @@ class HourlyForecast extends StatelessWidget {
         },
       ),
     );
+
   }
 }
