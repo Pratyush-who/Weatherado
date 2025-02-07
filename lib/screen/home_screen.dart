@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:apihandelling/api/const.dart';
-import 'package:apihandelling/widget/bottomNav.dart';
 import 'package:apihandelling/widget/description.dart';
 import 'package:apihandelling/widget/dialogue_box.dart';
 import 'package:apihandelling/widget/highTemp.dart';
