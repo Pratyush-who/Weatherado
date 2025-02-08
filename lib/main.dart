@@ -1,3 +1,4 @@
+import 'package:apihandelling/screen/popular_cities.dart';
 import 'package:flutter/material.dart';
 import 'package:apihandelling/screen/entry_screen.dart';
 import 'package:apihandelling/screen/home_screen.dart';
@@ -17,6 +18,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => const EntryScreen(),
         HomeScreen.routeName: (context) => HomeScreen(),
+        PopularCitiesScreen.routeName: (context) => PopularCitiesScreen(),
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:apihandelling/api/const.dart';
+import 'package:apihandelling/screen/popular_cities.dart';
 import 'package:apihandelling/widget/description.dart';
 import 'package:apihandelling/widget/dialogue_box.dart';
 import 'package:apihandelling/widget/highTemp.dart';
@@ -34,10 +35,18 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  setState(() {
+    _selectedIndex = index;
+  });
+
+  if (index == 2) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PopularCitiesScreen()),
+    );
   }
+}
+
 
   Future<void> fetchWeather(String cityName) async {
   var weather = await wf.currentWeatherByCityName(cityName);
@@ -234,12 +243,11 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(
               icon: Icon(Icons.pin_drop_outlined, color: Colors.white,size: 35,),
               onPressed: () => {_onItemTapped(0),
-              
               },
             ),
             IconButton(
               icon: Icon(Icons.list, color: Colors.white,size: 35,),
-              onPressed: () => _onItemTapped(2),
+              onPressed: () => {_onItemTapped(2),}
             ),
           ],
         ),
