@@ -12,11 +12,11 @@ class EntryScreen extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF1A237E),
+              Color.fromARGB(255, 36, 44, 134),
               Color.fromARGB(255, 67, 74, 153),
-              Color.fromARGB(255, 154, 96, 179),
+              Color.fromARGB(255, 161, 110, 184),
             ],
-            stops: [0.2, 0.8, 1],
+            stops: [0.2, 0.7, 1],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
