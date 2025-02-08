@@ -9,6 +9,7 @@ import 'package:apihandelling/widget/lowTemp.dart';
 import 'package:apihandelling/widget/temp_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weather/weather.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -100,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
                   child: Container(
                     color: const Color.fromARGB(255, 76, 44, 132).withOpacity(0.1),
-                    padding: EdgeInsets.symmetric(vertical: 1, horizontal: 30),
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                     child: ListView(
                       controller: controller,
                       children: [
@@ -155,6 +156,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         ListTile(
+                          leading: FaIcon(FontAwesomeIcons.gaugeHigh,
+                              color: const Color.fromARGB(255, 177, 166, 166),
+                              size: 30),
+                          title: Text(
+                            "Pressure: ${currentWeather?.pressure} mmHg",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
+                        ListTile(
                           leading: Icon(Icons.wind_power,
                               color: const Color.fromARGB(255, 177, 166, 166),
                               size: 30),
@@ -163,6 +173,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ),
+                        ListTile(
+                          leading: FaIcon(FontAwesomeIcons.temperatureHigh,
+                              color: const Color.fromARGB(255, 177, 166, 166),
+                              size: 30),
+                          title: Text(
+                              "Max Temperature: ${currentWeather?.tempMax?.celsius?.toStringAsFixed(1)}°C",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        ListTile(
+                          leading: FaIcon(FontAwesomeIcons.temperatureLow,
+                              color: const Color.fromARGB(255, 177, 166, 166),
+                              size: 30),
+                          title: Text(
+                              "Min Temperature: ${currentWeather?.tempMin?.celsius?.toStringAsFixed(1)}°C",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                       
                         ListTile(
                           leading: Icon(Icons.wb_sunny,
                               color: const Color.fromARGB(255, 177, 166, 166),
@@ -197,17 +226,19 @@ class _HomeScreenState extends State<HomeScreen> {
       color: Color.fromARGB(255, 74, 44, 132).withOpacity(.8), 
       child: BottomAppBar(
         color: Colors.transparent,
-        height: 60,
+        height: 70,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.pin_drop_outlined, color: Colors.white,size: 30,),
-              onPressed: () => _onItemTapped(0),
+              icon: Icon(Icons.pin_drop_outlined, color: Colors.white,size: 35,),
+              onPressed: () => {_onItemTapped(0),
+              
+              },
             ),
             IconButton(
-              icon: Icon(Icons.list, color: Colors.white,size: 30,),
+              icon: Icon(Icons.list, color: Colors.white,size: 35,),
               onPressed: () => _onItemTapped(2),
             ),
           ],
@@ -217,10 +248,10 @@ class _HomeScreenState extends State<HomeScreen> {
   ),
 ),
 floatingActionButton: Stack(
-  alignment: Alignment.bottomCenter,
+  alignment: Alignment.center,
   children: [
     Positioned(
-      bottom: 3, // Adjust this value to move FAB down
+      bottom: 5, // Adjust this value to move FAB down
       child: FloatingActionButton(
         onPressed: () async {
           final selectedCity = await showDialog<String>(
